@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Bookoholics</string>
+    <string name="search_hint">"Enter book name, author name, or ISBN "</string>
+</resources>
