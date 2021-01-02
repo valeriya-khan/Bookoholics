@@ -1,4 +1,4 @@
-package com.demo.bookoholics;
+package com.demo.bookaholics;
 
 import android.content.Context;
 
