@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Bookaholics</string>
     <string name="search_hint">"Enter book name, author name, or ISBN "</string>
+    <string name="search_action_title">Search</string>
+    <string name="timer_action_title">timer_action_title</string>
+    <string name="news_feed_action_title">news_feed_action_title</string>
+    <string name="my_library_action_title">my_library_action_title</string>
+    <string name="my_page_action_title">my_page_action_title</string>
 </resources>

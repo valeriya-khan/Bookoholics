@@ -1,4 +1,4 @@
-package com.demo.bookaholics;
+package com.demo.bookaholics.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.demo.bookaholics.R;
 import com.demo.bookaholics.adapters.SearchResultsAdapter;
 import com.demo.bookaholics.pojo.Book;
 import com.demo.bookaholics.viewmodel.MainViewModel;
@@ -28,22 +30,37 @@ public class SearchActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     private SearchResultsAdapter adapter;
     private RecyclerView recyclerViewResults;
+    private String searchQuery;
+    private int startIndex;
+    private int maxCount;
+    private ProgressBar progressBar;
+    private Boolean isLoading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 //        handleIntent(getIntent());
-
+        progressBar = findViewById(R.id.progressBarSearch);
         searchView = findViewById(R.id.searchViewInSearch);
         searchView.setIconifiedByDefault(false);
         searchView.requestFocus();
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        startIndex = 0;
+        adapter = new SearchResultsAdapter();
         viewModel.deleteAllBooks();
+        isLoading = false;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                viewModel.loadBooks(query,"en","relevance",0);
+                searchQuery = query;
+                startIndex = 0;
+                viewModel.deleteAllBooks();
+                adapter.clear();
+//                progressBar.setVisibility(View.VISIBLE);
+                isLoading = true;
+                viewModel.loadBooks(progressBar,query,"en","relevance",startIndex);
                 Log.i("myres","hello");
+//                searchView.clearFocus();
                 return false;
             }
 
@@ -53,8 +70,20 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
         recyclerViewResults = findViewById(R.id.recyclerViewSearchResult);
-        adapter = new SearchResultsAdapter();
+        adapter.setOnReachEndListener(new SearchResultsAdapter.OnReachEndListener() {
+            @Override
+            public void onReachEnd() {
+                if(!isLoading){
+                    startIndex+=10;
+//                progressBar.setVisibility(View.VISIBLE);
+                    viewModel.loadBooks(progressBar,searchQuery,"en","relevance",startIndex);
+                    isLoading = true;
+                }
+
+            }
+        });
         recyclerViewResults.setAdapter(adapter);
         recyclerViewResults.setLayoutManager(new LinearLayoutManager(this));
         LiveData<List<Book>> booksFromLivedata = viewModel.getBooks();
@@ -62,7 +91,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Book> books) {
                 Log.i("myres", String.valueOf(books.size()));
-                adapter.setBooks(books);
+                int startInd = adapter.getBooks().size();
+                isLoading = false;
+                if(startIndex==0){
+                    adapter.setBooks(books);
+                }else if(books.size()>startInd){
+                    Log.i("hello",Integer.toString(startInd));
+                    adapter.addBooks(books.subList(startInd,books.size()));
+                }
+
+//                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -86,5 +124,8 @@ public class SearchActivity extends AppCompatActivity {
 
     public void onClickBackButton(View view) {
         finish();
+    }
+
+    public void showPopUpMenu(View view) {
     }
 }

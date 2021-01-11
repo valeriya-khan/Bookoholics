@@ -23,7 +23,7 @@ public interface BookDao {
     void deleteAllBooks();
 
     @Query("SELECT * FROM books WHERE bookId==:bookId")
-    Book getBookById(int bookId);
+    Book getBookById(String bookId);
 
 
 }

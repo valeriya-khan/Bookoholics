@@ -1,4 +1,4 @@
-package com.demo.bookaholics;
+package com.demo.bookaholics.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +9,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.TextView;
+
+import com.demo.bookaholics.R;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     SearchView searchView;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         searchView = (SearchView) findViewById(R.id.searchView);
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 searchView.clearFocus();
                 if(hasFocus){
-                    Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                 }
@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClickStartSearch(View view) {
 
-    }
 
 //
 //    @Override

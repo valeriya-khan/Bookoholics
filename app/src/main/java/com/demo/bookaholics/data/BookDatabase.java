@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.demo.bookaholics.pojo.Book;
 
-@Database(entities = {Book.class},version = 1,exportSchema = false)
+@Database(entities = {Book.class},version = 4,exportSchema = false)
 public abstract class BookDatabase extends RoomDatabase {
 
     private static BookDatabase bookDatabase;

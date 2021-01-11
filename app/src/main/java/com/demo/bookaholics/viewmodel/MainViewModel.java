@@ -3,6 +3,8 @@ package com.demo.bookaholics.viewmodel;
 import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,8 +43,9 @@ public class MainViewModel extends AndroidViewModel {
         apiBookFactory = ApiBookFactory.getInstance();
         apiBookService = apiBookFactory.getApiBookService();
         compositeDisposable = new CompositeDisposable();
-        bookDatabase = BookDatabase.getInstance(application);
+        bookDatabase = BookDatabase.getInstance(getApplication());
         books = bookDatabase.bookDao().getAllBooks();
+
     }
 
     public LiveData<List<Book>> getBooks() {
@@ -76,17 +79,21 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
-    public void loadBooks(String search_query, String lang_restriction, String order_by, int start_index){
+    public void loadBooks(ProgressBar progressBar,String search_query, String lang_restriction, String order_by, int start_index){
+        progressBar.setVisibility(View.VISIBLE);
         Disposable disposable = apiBookService.getBooks(API_KEY,search_query,lang_restriction,order_by,start_index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BookResponse>() {
                     @Override
                     public void accept(BookResponse bookResponse) throws Exception {
-                        Toast.makeText(getApplication(),"success",Toast.LENGTH_SHORT).show();
-                        deleteAllBooks();
+                        Toast.makeText(getApplication(),Integer.toString(bookResponse.getTotalBooks()),Toast.LENGTH_SHORT).show();
                         List<Book> books = bookResponse.getBooks();
-                        insertBooks(books);
+
+                        if(books!=null && books.size()>0){
+                            insertBooks(books);
+                        }
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
