@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "205567581295",
+    "project_id": "bookaholics-application",
+    "storage_bucket": "bookaholics-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205567581295:android:73a9111c0e3d0e8f75819a",
+        "android_client_info": {
+          "package_name": "com.demo.bookaholics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205567581295-a77mj7dqrjbfdnrdl83jsfq2r6mppq37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5fhFhovCc4WeIUAp9s3h5sSEuTiVkzd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205567581295-a77mj7dqrjbfdnrdl83jsfq2r6mppq37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
